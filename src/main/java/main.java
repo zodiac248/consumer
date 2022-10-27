@@ -10,7 +10,7 @@ public class main {
     public static void main(String[] args) {
         ConcurrentHashMap map = new ConcurrentHashMap();
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("54.202.95.206");
+        connectionFactory.setHost("ec2-54-186-84-160.us-west-2.compute.amazonaws.com");
         connectionFactory.setPort(5672);
         connectionFactory.setUsername("username");
         connectionFactory.setPassword("971128");
@@ -18,8 +18,8 @@ public class main {
         try {
             Connection connection = connectionFactory.newConnection();
             RMQChannelFactory rmqChannelFactory = new RMQChannelFactory(connection);
-            RMQChannelPool rmqChannelPool = new RMQChannelPool(32,rmqChannelFactory);
-            for (int i = 0; i < 32; i++) {
+            RMQChannelPool rmqChannelPool = new RMQChannelPool(128,rmqChannelFactory);
+            for (int i = 0; i < 64; i++) {
                 Thread thread = new Thread(new Consumer(map,rmqChannelPool));
                 thread.start();
             }
