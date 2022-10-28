@@ -11,7 +11,7 @@ public class main {
         int numThread = Integer.parseInt(args[0]);
         ConcurrentHashMap map = new ConcurrentHashMap();
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("ec2-54-186-84-160.us-west-2.compute.amazonaws.com");
+        connectionFactory.setHost("44.228.237.106");
         connectionFactory.setPort(5672);
         connectionFactory.setUsername("username");
         connectionFactory.setPassword("971128");
