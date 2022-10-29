@@ -1,4 +1,5 @@
 import Schema.LiftRide;
+import Schema.SkiRequest;
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
@@ -27,8 +28,8 @@ public class Consumer implements Runnable {
                     String message = new String(delivery.getBody(), "UTF-8");
                     channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
                     Gson gson = new Gson();
-                    LiftRide liftRide = gson.fromJson(message,LiftRide.class);
-                    map.put(liftRide.getLiftID(),liftRide.getTime());
+                    SkiRequest skiRequest = gson.fromJson(message,SkiRequest.class);
+                    map.put(skiRequest.getLiftID(),skiRequest);
                 };
                 channel.basicConsume("mainQueue", false, deliverCallback, consumerTag -> { });
             } catch (IOException e) {
