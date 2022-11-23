@@ -11,11 +11,10 @@ public class main {
         int numThread = 16;
         ConcurrentHashMap map = new ConcurrentHashMap();
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("44.228.237.106");
+        connectionFactory.setHost("44.234.64.214");
         connectionFactory.setPort(5672);
-        connectionFactory.setUsername("username");
-        connectionFactory.setPassword("971128");
-        connectionFactory.setVirtualHost("roy");
+        connectionFactory.setUsername("admin");
+        connectionFactory.setPassword("admin");
         try {
             Connection connection = connectionFactory.newConnection();
             RMQChannelFactory rmqChannelFactory = new RMQChannelFactory(connection);
