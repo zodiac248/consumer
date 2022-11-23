@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
 
 import javax.management.relation.RelationNotFoundException;
 import java.io.IOException;
@@ -26,10 +28,19 @@ public class Consumer implements Runnable {
                 channel.basicQos(1);
                 DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                     String message = new String(delivery.getBody(), "UTF-8");
-                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
                     Gson gson = new Gson();
+
                     SkiRequest skiRequest = gson.fromJson(message,SkiRequest.class);
-                    map.put(skiRequest.getLiftID(),skiRequest);
+                    Jedis jedis = JedisConnectionFactory.getJedis();
+                    Transaction transaction = jedis.multi();
+                    transaction.incr("days:"+skiRequest.getSkierID()+":"+skiRequest.getSeasonID());
+                    transaction.incrBy("verticals:"+skiRequest.getSkierID()+":"+skiRequest.getDayID(),10*skiRequest.getLiftID());
+                    transaction.sadd("lifts:"+skiRequest.getSkierID()+":"+skiRequest.getDayID(),String.valueOf(skiRequest.getLiftID()));
+                    transaction.sadd("visits:"+skiRequest.getResortID()+":"+skiRequest.getDayID(),String.valueOf(skiRequest.getSkierID()));
+                    transaction.exec();
+                    transaction.close();
+                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                    jedis.close();
                 };
                 channel.basicConsume("mainQueue", false, deliverCallback, consumerTag -> { });
             } catch (IOException e) {

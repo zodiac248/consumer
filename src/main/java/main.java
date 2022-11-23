@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 public class main {
     public static void main(String[] args) {
-        int numThread = Integer.parseInt(args[0]);
+        int numThread = 32;
         ConcurrentHashMap map = new ConcurrentHashMap();
         ConnectionFactory connectionFactory = new ConnectionFactory();
         connectionFactory.setHost("44.228.237.106");
