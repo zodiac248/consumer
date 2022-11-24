@@ -11,7 +11,7 @@ public class main {
         int numThread = 16;
         ConcurrentHashMap map = new ConcurrentHashMap();
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("44.234.64.214");
+        connectionFactory.setHost("35.166.230.31");
         connectionFactory.setPort(5672);
         connectionFactory.setUsername("admin");
         connectionFactory.setPassword("admin");

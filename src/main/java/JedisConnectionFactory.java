@@ -10,7 +10,7 @@ public class JedisConnectionFactory {
         jedisPoolConfig.setMaxTotal(8);
         jedisPoolConfig.setMaxIdle(8);
         jedisPoolConfig.setMinIdle(1);
-        jedisPool = new JedisPool(jedisPoolConfig,"52.26.32.232",6379,1000,"123456");
+        jedisPool = new JedisPool(jedisPoolConfig,"35.155.33.35",6379,1000,"123456");
     }
     public static Jedis getJedis(){
         return jedisPool.getResource();
