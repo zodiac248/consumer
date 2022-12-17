@@ -33,10 +33,17 @@ public class Consumer implements Runnable {
                     SkiRequest skiRequest = gson.fromJson(message,SkiRequest.class);
                     Jedis jedis = JedisConnectionFactory.getJedis();
                     Transaction transaction = jedis.multi();
-                    transaction.incr("days:"+skiRequest.getSkierID()+":"+skiRequest.getSeasonID());
-                    transaction.incrBy("verticals:"+skiRequest.getSkierID()+":"+skiRequest.getDayID(),10*skiRequest.getLiftID());
-                    transaction.sadd("lifts:"+skiRequest.getSkierID()+":"+skiRequest.getDayID(),String.valueOf(skiRequest.getLiftID()));
-                    transaction.sadd("visits:"+skiRequest.getResortID()+":"+skiRequest.getDayID(),String.valueOf(skiRequest.getSkierID()));
+/*                    transaction.incr("days:"+skiRequest.getSkierID()+":"+skiRequest.getSeasonID());
+                    transaction.incrBy("verticals:"+skiRequest.getSkierID()
+                            +":"+skiRequest.getDayID(),10*skiRequest.getLiftID());
+                    transaction.sadd("lifts:"+skiRequest.getSkierID()+":"+skiRequest.getDayID(),
+                            String.valueOf(skiRequest.getLiftID()));
+                    transaction.sadd("visits:"+skiRequest.getResortID()+":"+skiRequest.getDayID(),String.valueOf(skiRequest.getSkierID()));*/
+                    transaction.sadd("resort:"+skiRequest.getSkierID()+":"+skiRequest.getResortID()+":"+skiRequest.getSeasonID()+":"+skiRequest.getDayID(),Integer.toString(skiRequest.getSkierID()));
+                    String key ="vertical:"+skiRequest.getSkierID();
+                    transaction.hincrBy(key,skiRequest.getDayID()+":"+skiRequest.getSeasonID()+":"+skiRequest.getResortID(),skiRequest.getLiftID()*10);
+                    transaction.hincrBy(key,skiRequest.getSeasonID()+":"+skiRequest.getResortID(),skiRequest.getLiftID()*10);
+
                     transaction.exec();
                     transaction.close();
                     channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
