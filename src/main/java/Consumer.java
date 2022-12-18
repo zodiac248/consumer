@@ -39,7 +39,7 @@ public class Consumer implements Runnable {
                     transaction.sadd("lifts:"+skiRequest.getSkierID()+":"+skiRequest.getDayID(),
                             String.valueOf(skiRequest.getLiftID()));
                     transaction.sadd("visits:"+skiRequest.getResortID()+":"+skiRequest.getDayID(),String.valueOf(skiRequest.getSkierID()));*/
-                    transaction.sadd("resort:"+":"+skiRequest.getResortID()+":"+skiRequest.getSeasonID()+":"+skiRequest.getDayID(),Integer.toString(skiRequest.getSkierID()));
+                    transaction.sadd("resort:"+skiRequest.getResortID()+":"+skiRequest.getSeasonID()+":"+skiRequest.getDayID(),Integer.toString(skiRequest.getSkierID()));
                     String key ="vertical:"+skiRequest.getSkierID();
                     transaction.hincrBy(key,skiRequest.getDayID()+":"+skiRequest.getSeasonID()+":"+skiRequest.getResortID(),skiRequest.getLiftID()*10);
                     transaction.hincrBy(key,skiRequest.getSeasonID()+":"+skiRequest.getSeasonID(),skiRequest.getLiftID()*10);
